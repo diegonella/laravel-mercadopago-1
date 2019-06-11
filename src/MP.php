@@ -101,6 +101,36 @@ class MP {
         return $this->get_payment($id);
     }
 
+    public function get_etiquietaBKP($id) {
+        $uri_prefix = $this->sandbox ? "/sandbox" : "";
+            
+        $request = array(
+            "uri" => $uri_prefix."/collections/notifications/{$id}",
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            )
+        );
+         $payment_info = MPRestClient::get($request);
+         $request = array(
+            "uri" => $uri_prefix."/merchant_orders/" . $payment_info["response"]["collection"]["merchant_order_id"],
+            "params" => array(
+                "access_token" => $this->get_access_token()
+            )
+        );
+         $payment_info = MPRestClient::get($request);
+        
+        // dd($payment_info); 27838790168
+         $datos_etiqueta = [];
+         $datos_etiqueta = [
+                            'status_envio' => $payment_info["response"]["shipments"][0]["status"],
+                            'shipment_ids' => $payment_info["response"]["shipments"][0]["id"],
+                            'access_token' => $this->get_access_token(),
+                            'payment_info' => $payment_info,
+                        ];
+        
+        return $datos_etiqueta;
+    }
+    
     public function get_etiquieta($id) {
         $uri_prefix = $this->sandbox ? "/sandbox" : "";
             
