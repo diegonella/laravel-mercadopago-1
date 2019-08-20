@@ -1,6 +1,6 @@
 <?php
 
-namespace SantiGraviano\LaravelMercadoPago;
+namespace Diegonella\LaravelMercadoPago;
 
 use Exception;
 
